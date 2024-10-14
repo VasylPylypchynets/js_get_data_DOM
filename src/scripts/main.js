@@ -1,21 +1,30 @@
 'use strict';
 
 // write your code here
+const POP_SEL = '.population';
+const TOTAL_SEL = '.total-population';
+const AVG_SEL = '.average-population';
 
-const populationElements = document.querySelectorAll('.population');
+const popItems = document.querySelectorAll(POP_SEL);
 
-const populations = Array.from(populationElements).map((pop) => {
-  return Number(pop.textContent.split(',').join(''));
+const toNumber = (text) => Number(text.split(',').join(''));
+
+const populations = Array.from(popItems).map((pop) => {
+  return toNumber(pop.textContent);
 });
 
-const totalPopulation = populations.reduce((sum, population) => {
-  return sum + population;
-}, 0);
+const calcTotal = (arr) => arr.reduce((total, curr) => total + curr, 0);
 
-const averagePopulation = totalPopulation / populations.length;
+const totalPop = calcTotal(populations);
 
-const formattedTotal = totalPopulation.toLocaleString();
-const formattedAverage = Math.round(averagePopulation).toLocaleString();
+const calcAvg = (total, count) => (count > 0 ? total / count : 0);
 
-document.querySelector('.total-population').textContent = formattedTotal;
-document.querySelector('.average-population').textContent = formattedAverage;
+const avgPop = calcAvg(totalPop, populations.length);
+
+const formatNum = (num) => num.toLocaleString();
+
+const totalFormatted = formatNum(totalPop);
+const avgFormatted = formatNum(Math.round(avgPop));
+
+document.querySelector(TOTAL_SEL).textContent = totalFormatted;
+document.querySelector(AVG_SEL).textContent = avgFormatted;
